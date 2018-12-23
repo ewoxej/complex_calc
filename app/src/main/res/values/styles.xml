@@ -1,0 +1,35 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorBack</item>
+    </style>
+
+    <style name="MyKeyStyle" parent="@android:style/Widget.DeviceDefault.Button">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">20sp</item>
+            <item name="android:layout_margin">1.5dp</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="TopKeyStyle" parent="@android:style/Widget.DeviceDefault.Button">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="MyKeyOperStyle" parent="@style/MyKeyStyle">
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+</resources>

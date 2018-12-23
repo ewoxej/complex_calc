@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_marginRight="0dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/textViewLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/hlp_key"
+                style="@style/TopKeyStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="hlp_click"
+                android:text="\?"
+                android:textColor="@color/colorText" />
+
+            <Button
+                android:id="@+id/dgr_key"
+                style="@style/TopKeyStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="dgr_click"
+                android:text="->"
+                android:textColor="@color/colorText" />
+
+            <Button
+                android:id="@+id/degrad_key"
+                style="@style/TopKeyStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="dr_click"
+                android:text="DEG"
+                android:textColor="@color/colorText" />
+
+            <Button
+                android:id="@+id/prec_key"
+                style="@style/TopKeyStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="prec_click"
+                android:text="3"
+                android:textColor="@color/colorText" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/form"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:text="0"
+            android:textColor="@color/colorText"
+            android:textIsSelectable="true"
+            android:textSize="43sp"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/form2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:text="0"
+            android:textColor="@color/colorText"
+            android:textIsSelectable="true"
+            android:textSize="33sp"
+            android:typeface="monospace" />
+    </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/kbd"
+        android:layout_width="match_parent"
+        android:layout_height="365sp"
+        android:gravity="bottom|left">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/key_clr"
+                style="@style/MyKeyStyle"
+                android:onClick="clr_click"
+                android:padding="10sp"
+                android:text="СLR"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/key_exp"
+                style="@style/MyKeyStyle"
+                android:onClick="exp_click"
+                android:text="e^jx"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/key_alg"
+                style="@style/MyKeyStyle"
+                android:onClick="alg_click"
+                android:text="+jx" />
+
+            <Button
+                android:id="@+id/key_dvd"
+                style="@style/MyKeyStyle"
+                android:onClick="dvd_click"
+                android:text="/" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/key7"
+                style="@style/MyKeyStyle"
+                android:onClick="k7_click"
+                android:text="7" />
+
+            <Button
+                android:id="@+id/key8"
+                style="@style/MyKeyStyle"
+                android:onClick="k8_click"
+                android:text="8" />
+
+            <Button
+                android:id="@+id/key9"
+                style="@style/MyKeyStyle"
+                android:onClick="k9_click"
+                android:text="9" />
+
+            <Button
+                android:id="@+id/key_mul"
+                style="@style/MyKeyStyle"
+                android:onClick="mul_click"
+                android:text="*" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/key4"
+                style="@style/MyKeyStyle"
+                android:onClick="k4_click"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/key5"
+                style="@style/MyKeyStyle"
+                android:onClick="k5_click"
+                android:text="5" />
+
+            <Button
+
+                android:id="@+id/key6"
+                style="@style/MyKeyStyle"
+                android:onClick="k6_click"
+                android:text="6" />
+
+            <Button
+                android:id="@+id/key_sub"
+                style="@style/MyKeyStyle"
+                android:onClick="sub_click"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/key1"
+                style="@style/MyKeyStyle"
+                android:onClick="k1_click"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/key2"
+                style="@style/MyKeyStyle"
+                android:onClick="k2_click"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/key3"
+                style="@style/MyKeyStyle"
+                android:onClick="k3_click"
+                android:text="3" />
+
+            <Button
+                android:id="@+id/key_add"
+                style="@style/MyKeyStyle"
+                android:onClick="add_click"
+                android:text="+" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/key_sign"
+                style="@style/MyKeyStyle"
+                android:onClick="sign_click"
+                android:text="±" />
+
+            <Button
+                android:id="@+id/key0"
+                style="@style/MyKeyStyle"
+                android:onClick="k0_click"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/key_point"
+                style="@style/MyKeyStyle"
+                android:onClick="point_click"
+                android:text="." />
+
+            <Button
+                android:id="@+id/key_assign"
+                style="@style/MyKeyStyle"
+                android:onClick="assign_click"
+                android:text="=" />
+        </TableRow>
+
+    </TableLayout>
+</LinearLayout>
+
