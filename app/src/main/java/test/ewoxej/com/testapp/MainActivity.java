@@ -38,21 +38,15 @@ public class MainActivity extends AppCompatActivity {
             first_operand;
     private int E1fontSize;
     public TextView tv1, tv2;
-    //PREFERENCES
-    private int prec = 3;
     private boolean sign = true;
-    private boolean deg = true;
-    public static final String APP_PREF = "preferences";
-    public static final String APP_PREF_DEGRAD = "degrad";
-    public static final String APP_PREF_PREC = "prec";
+    private ComplexNumber.UnitType unitType = ComplexNumber.UnitType.Degree;
+
     private SharedPreferences mSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mSetting = getSharedPreferences(APP_PREF, Context.MODE_PRIVATE);
-        settingRestore();
         Button btn;
         btn = findViewById(R.id.key_clr);
         Button hlp_btn=findViewById(R.id.hlp_key);
@@ -93,19 +87,6 @@ toast.show();
 
     }
 
-    public void settingRestore() {
-        Button btnd,btnp;
-        btnp=findViewById(R.id.prec_key);
-        btnd = findViewById(R.id.degrad_key);
-        if (mSetting.contains(APP_PREF_DEGRAD)) {
-            deg = mSetting.getBoolean(APP_PREF_DEGRAD, true);
-        }
-        if(mSetting.contains(APP_PREF_PREC)){
-            prec=mSetting.getInt(APP_PREF_PREC,3);
-        }
-        btnp.setText(Integer.toString(prec));
-        if(!deg) btnd.setText("RAD");
-    }
 
     public void setText(TextView tv, CharSequence text, int fontSize) {
         int tmpFS = returnfontSize(exp_string1.length(), fontSize);
@@ -253,9 +234,9 @@ toast.show();
 
     public char getStateFirst() {
         ComplexNumber tmpnum;
-        tmpnum = new ComplexNumber(first_operand, prec, deg);
+        tmpnum = new ComplexNumber(first_operand, prec, unitType);
         if (first_operand.indexOf('j')==-1) return 'r';
-        if (tmpnum.getForm()) return 'i';
+        if (tmpnum.getForm() != ComplexNumber.NumberType.Exponential) return 'i';
         else return 'e';
     }
 
@@ -431,19 +412,19 @@ toast.show();
     public void recalc() {
 ComplexNumber tmpnum;
         if (gl_state == 'b') {
-            tmpnum = new ComplexNumber(first_operand, prec,deg);
+            tmpnum = new ComplexNumber(first_operand, prec,unitType);
             tmpnum.transform();
             if (state == 'r')
                 exp_string2 = tmpnum.toString() + " " + Character.toString(operator) + " " + exp_string1;
             else {
-                res = new ComplexNumber(exp_string1, prec,deg);
+                res = new ComplexNumber(exp_string1, prec,unitType);
                 res.transform();
                 exp_string2 = tmpnum.toString() + " " + Character.toString(operator) + " " + res.toString();
             }
         } else {//a or r
             if (state == 'r') exp_string2 = exp_string1;
             else {
-                tmpnum = new ComplexNumber(exp_string1, prec, deg);
+                tmpnum = new ComplexNumber(exp_string1, prec, unitType);
                 tmpnum.transform();
                 exp_string2 = tmpnum.toString();
             }
@@ -508,9 +489,9 @@ ComplexNumber tmpnum;
     public void assign_click(View view) {
         ComplexNumber tmpnum,tmpnum1;
         if (gl_state == 'b') {
-            tmpnum = new ComplexNumber(first_operand, prec, deg);
-            if (exp_string1.isEmpty()) tmpnum1 = new ComplexNumber("0", prec,  deg);
-            else tmpnum1 = new ComplexNumber(exp_string1, prec, deg);
+            tmpnum = new ComplexNumber(first_operand, prec, unitType);
+            if (exp_string1.isEmpty()) tmpnum1 = new ComplexNumber("0", prec,  unitType);
+            else tmpnum1 = new ComplexNumber(exp_string1, prec, unitType);
             res=tmpnum.calculate(tmpnum1,operator);
             exp_string1 = res.toString();
             if (!exp_string1.equals("oo")) {
@@ -553,8 +534,8 @@ ComplexNumber tmpnum;
     public void dr_click(View view){
         Button btn;
         btn = findViewById(R.id.degrad_key);
-        if(deg) {btn.setText("RAD");deg=false;}
-        else {btn.setText("DEG");deg=true;}
+        if(unitType == ComplexNumber.UnitType.Degree) {btn.setText("RAD");unitType= ComplexNumber.UnitType.Radians;}
+        else {btn.setText("DEG");unitType= ComplexNumber.UnitType.Degree;}
         SharedPreferences.Editor editor=mSetting.edit();
         editor.putBoolean(APP_PREF_DEGRAD,deg);
         editor.apply();
@@ -616,8 +597,8 @@ ComplexNumber tmpnum;
 
     public void dgr_click(View view){
         Intent intent = new Intent(MainActivity.this, Diagram.class);
-        ComplexNumber tmp=new ComplexNumber(exp_string1,prec,deg);
-        if(!tmp.getForm()) tmp.transform();
+        ComplexNumber tmp=new ComplexNumber(exp_string1,prec,unitType);
+        if(tmp.getForm() == ComplexNumber.NumberType.Exponential) tmp.transform();
 
         intent.putExtra("im",(float)tmp.getIm());
         intent.putExtra("rez",(float)tmp.getRez());

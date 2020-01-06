@@ -6,30 +6,43 @@ import java.lang.Math;
 public class ComplexNumber{
     private double m_Im;//Imaginary part
     private double m_Rez;//Real part
-    private boolean m_Form;//true-algebraic,false-exponential
-    private boolean m_Degrees;//true-degrees,false-radians
+    public enum NumberType
+    {
+        Algebraic,
+        Exponential,
+        Real
+    }
+    public enum UnitType
+    {
+        Degree,
+        Radians
+    }
+    private NumberType form;
+    private UnitType unitType;
+    private boolean f;//true-algebraic,false-exponential
+    private boolean d;//true-degrees,false-radians
     private int m_Precision;
 
-    ComplexNumber(String _str,int _prec,boolean _deg){
-        m_Degrees=_deg;
-        m_Precision=++_prec;
-        parseString(_str);
+    ComplexNumber(String str,int prec,UnitType deg){
+        unitType=deg;
+        m_Precision=++prec;
+        parseString(str);
     }
 
-    ComplexNumber(double _R,double _I,boolean _form,int _prec,boolean _deg){
-        m_Rez=_R;
-        m_Form=_form;
-        m_Im=_I;
-        m_Degrees=_deg;
-        m_Precision=++_prec;
+    ComplexNumber(double R,double I,NumberType type,int prec,UnitType deg){
+        m_Rez=R;
+        form=type;
+        m_Im=I;
+        unitType=deg;
+        m_Precision=++prec;
     }
-    public boolean getForm(){return m_Form;}
+    public NumberType getForm(){return form;}
     public double getRez(){return m_Rez;}
     public double getIm(){return m_Im;}
 
     private void parseString(String str){
         if(str.equals('-')) {m_Rez=0;m_Im=0;return;}
-        if(str.equals('j')) {m_Rez=0;m_Im=1;m_Form=true;return;}
+        if(str.equals('j')) {m_Rez=0;m_Im=1;form=NumberType.Algebraic;return;}
         int index_e=str.indexOf('e');
         if(index_e!=-1) {parseExp(str,index_e);return;}
         index_e=str.indexOf("+j");
@@ -38,11 +51,11 @@ public class ComplexNumber{
         if(index_e!=-1) {parseAlg(str,index_e);return;}
         m_Rez=Double.parseDouble(str);
         m_Im=0;
-        m_Form=true;
+        form=NumberType.Real;
     }
 
     private void parseExp(String str,int index_e){
-        m_Form=false;
+        form=NumberType.Exponential;
         String Rez_str,Im_str;
         if(index_e==0) m_Rez=1;
         else{
@@ -63,7 +76,7 @@ public class ComplexNumber{
     }
 
     private void parseAlg(String str,int index_e){
-        m_Form=true;
+        form=NumberType.Algebraic;
         if(str.charAt(index_e)=='+') m_Im=1;
         else m_Im=-1;
         String Rez_str,Im_str;
@@ -96,7 +109,7 @@ public class ComplexNumber{
             else Rez_str=Double.toString(Rez_f);
             String signstr=Character.toString(sign);
             System.out.println(signstr);
-            if(m_Form) res+=(Rez_str+signstr+"j"+Im_str);
+            if(form == NumberType.Algebraic) res+=(Rez_str+signstr+"j"+Im_str);
             else {res+=(Rez_str+"e^(");
                 if(sign=='-') res+=(signstr+"j"+Im_str+")");
                 if(sign=='+') res+=("j"+Im_str+")");}
@@ -104,12 +117,12 @@ public class ComplexNumber{
     };
 
     public void transform(){
-        if(m_Form) toExp();
+        if(form == NumberType.Algebraic) toExp();
         else toAlg();
     }
 
     private void toExp(){
-        m_Form=!m_Form;
+        form = NumberType.Exponential;
         double z=Math.sqrt((m_Rez*m_Rez)+(m_Im*m_Im));
         double phi,arg;
         double div=m_Im/m_Rez;
@@ -121,33 +134,33 @@ public class ComplexNumber{
             if (m_Rez>0) m_Im=arg;
             if((m_Rez<0)&&(m_Im>=0)) m_Im=Math.PI+arg;
             if((m_Rez<0)&&(m_Im<0)) m_Im=(-Math.PI)+arg;
-        m_Rez=z;if(m_Degrees) m_Im=Math.toDegrees(m_Im);
+        m_Rez=z;if(unitType == UnitType.Degree) m_Im=Math.toDegrees(m_Im);
     }
 
     private void toAlg(){
-        m_Form=!m_Form;
+        form = NumberType.Algebraic;
         double ImR=m_Im;
-        if(m_Degrees) ImR=Math.toRadians(m_Im);
+        if(unitType == UnitType.Degree) ImR=Math.toRadians(m_Im);
         m_Im=(m_Rez*Math.sin(ImR));
         m_Rez=(m_Rez*Math.cos(ImR));
     }
 
    public ComplexNumber calculate(ComplexNumber second_operand,char _operation_code){
        ComplexNumber first_operand=this;
-       boolean origin_form_a=first_operand.m_Form;
-       boolean origin_form_b=second_operand.m_Form;
-       boolean _form=false;
+       NumberType origin_form_a=first_operand.form;
+       NumberType origin_form_b=second_operand.form;
+       NumberType _form = NumberType.Real;
        if(_operation_code=='+'||_operation_code=='-')
        {
-           if (!first_operand.m_Form) first_operand.toAlg();
-           if (!second_operand.m_Form) second_operand.toAlg();
-           _form=true;
+           if (first_operand.form != NumberType.Algebraic) first_operand.toAlg();
+           if (second_operand.form != NumberType.Algebraic) second_operand.toAlg();
+           _form=NumberType.Algebraic;
        }
        if(_operation_code=='*'||_operation_code=='/')
        {
-           if (first_operand.m_Form) first_operand.toExp();
-           if (second_operand.m_Form) second_operand.toExp();
-           _form=false;
+           if (first_operand.form != NumberType.Exponential) first_operand.toExp();
+           if (second_operand.form != NumberType.Exponential ) second_operand.toExp();
+           _form=NumberType.Exponential;
        }
        double _Rez=0,_Im=0;
        if(_operation_code=='-') {_Rez=m_Rez-second_operand.m_Rez;_Im=m_Im-second_operand.m_Im;}
@@ -155,10 +168,10 @@ public class ComplexNumber{
        if(_operation_code=='*') {_Rez=m_Rez*second_operand.m_Rez;_Im=m_Im+second_operand.m_Im;}
        if(_operation_code=='/') {_Rez=m_Rez/second_operand.m_Rez;_Im=m_Im-second_operand.m_Im;}
        if (_Rez==Double.POSITIVE_INFINITY) _Rez=0;
-       ComplexNumber result=new ComplexNumber(_Rez,_Im,_form,m_Precision,m_Degrees);
-       if(first_operand.m_Form!=origin_form_a) first_operand.transform();
-       if(second_operand.m_Form!=origin_form_b) second_operand.transform();
-       if(result.m_Form!=origin_form_a) result.transform();
+       ComplexNumber result=new ComplexNumber(_Rez,_Im,_form,m_Precision,unitType);
+       if(first_operand.form!=origin_form_a) first_operand.transform();
+       if(second_operand.form!=origin_form_b) second_operand.transform();
+       if(result.form!=origin_form_a) result.transform();
        return result;
    }
 }
